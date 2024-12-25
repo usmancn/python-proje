@@ -75,7 +75,7 @@ def kayitSayfa():
 
     def girisYap_gecis():
         kayitForm.destroy()
-        girisSayfa()
+        girisSayfaStart()
 
     kayitForm = CTkFrame(master=uygulama, fg_color="#8D6F3A", border_color="#FFCC70", border_width=2)
     kayitForm.pack(expand=True)
@@ -230,9 +230,11 @@ def uygulamaSayfa():
                                 text_color="#DFDFDF",fg_color="#1E3D3D",border_color="#426E73")
         filmAdi.place(x=330, y=150)
 
-        filmTur = CTkEntry(master=filmEkleForm, placeholder_text="Film Türü", width=170, height=40,font=("Ariel",18),
-                           text_color="#DFDFDF",fg_color="#1E3D3D",border_color="#426E73")
-        filmTur.place(x=330, y=205)
+        filmTur_combobox = CTkComboBox(master=filmEkleForm, values=["Türü", "Bilim Kurgu", "Komedi", "Drama", "Aksiyon"],
+                                         width=170, fg_color="#1E3D3D",
+                                         dropdown_fg_color="#1E3D3D", height=40, font=("Ariel", 18,),
+                                         text_color="#DFDFDF", border_color="#426E73")
+        filmTur_combobox.place(x=330, y=205)
 
         filmdurum_combobox = CTkComboBox(master=filmEkleForm, values=["Durum", "İzlenmiş", "İzlenmemiş", "İzlenecek"],
                                          width=170, fg_color="#1E3D3D",
@@ -277,9 +279,12 @@ def uygulamaSayfa():
                                 text_color="#DFDFDF",fg_color="#1E3D3D",border_color="#426E73")
         filmAdi.place(x=330, y=150)
 
-        filmTur = CTkEntry(master=filmDuzenleForm, placeholder_text="Film Türü", width=170, height=40,font=("Ariel",18),
-                           text_color="#DFDFDF",fg_color="#1E3D3D",border_color="#426E73")
-        filmTur.place(x=330, y=205)
+        filmTur_combobox = CTkComboBox(master=filmDuzenleForm,
+                                       values=["Türü", "Bilim Kurgu", "Komedi", "Drama", "Aksiyon"],
+                                       width=170, fg_color="#1E3D3D",
+                                       dropdown_fg_color="#1E3D3D", height=40, font=("Ariel", 18,),
+                                       text_color="#DFDFDF", border_color="#426E73")
+        filmTur_combobox.place(x=330, y=205)
 
         filmdurum_combobox = CTkComboBox(master=filmDuzenleForm, values=["Durum", "İzlenmiş", "İzlenmemiş", "İzlenecek"],
                                          width=170, fg_color="#1E3D3D",
