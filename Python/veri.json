@@ -1,0 +1,34 @@
+[
+    [
+        [
+            {
+                "ad": "Interstellar",
+                "tur": "Bilim Kurgu",
+                "durum": "İzlenecek",
+                "puan": 3,
+                "note": ""
+            },
+            {
+                "ad": "Avengers",
+                "tur": "Bilim Kurgu",
+                "durum": "İzlenmiş",
+                "puan": 5,
+                "note": "Muazzam ötesi"
+            }
+        ],
+        {
+            "ad": "fhdfgh",
+            "tur": "Komedi",
+            "durum": "İzlenmemiş",
+            "puan": 2,
+            "note": "fghgfh"
+        }
+    ],
+    {
+        "ad": "xcvxc",
+        "tur": "Komedi",
+        "durum": "İzlenmiş",
+        "puan": 2,
+        "note": "xcvxcv"
+    }
+]

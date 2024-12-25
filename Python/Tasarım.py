@@ -1,4 +1,4 @@
-
+import json
 from customtkinter import*
 from PIL import Image
 from tkinter import ttk, messagebox
@@ -26,6 +26,15 @@ filmlekle_png = CTkImage(light_image=filmlekle_icon, dark_image=filmlekle_icon)
 cıkıs_icon = Image.open("resimler/cıkıs.png")
 cıkıs_png = CTkImage(light_image=cıkıs_icon, dark_image=cıkıs_icon)
 
+film ={
+    "ad":"",
+    "tur":"",
+    "durum":"",
+    "puan":0,
+    "note":""
+}
+filmler = []
+
 def girisSayfaStart():
     girisForm = CTkFrame(master=uygulama,fg_color="#8D6F3A",border_color="#FFCC70",border_width=2)
     girisForm.pack(expand=True)
@@ -42,6 +51,8 @@ def girisSayfaStart():
         kayitSayfa()
 
     def anaForm_gecis():
+        with open("veri.json", "r", encoding="utf-8") as dosya:
+            print(json.load(dosya))
         girisForm.destroy()
         uygulamaSayfa()
 
@@ -71,6 +82,7 @@ def girisSayfaStart():
 def kayitSayfa():
 
     def kayit_basarili():
+
         messagebox.showinfo("Başarılı", "Başarıyla kayıt olundu!")
 
     def girisYap_gecis():
@@ -172,19 +184,22 @@ def uygulamaSayfa():
         filtreleme_lbl.place(x=150, y=150)
 
         filttur_combobox = CTkComboBox(master=filmlerimForm,
-                                       values=["Türü", "Bilim Kurgu", "Komedi", "Drama", "Aksiyon"],
+                                       values=["Bilim Kurgu", "Komedi", "Drama", "Aksiyon"],
                                        width=125, fg_color="#3D858D", border_color="#FFFFFF",
-                                       dropdown_fg_color="#3D858D",height=35)
+                                       dropdown_fg_color="#3D858D",height=35,state="readonly")
         filttur_combobox.place(x=230, y=150)
+        filttur_combobox.set("Türü")
 
-        filtdurum_combobox = CTkComboBox(master=filmlerimForm, values=["Durum", "İzlenmiş", "İzlenmemiş", "İzlenecek"],
+        filtdurum_combobox = CTkComboBox(master=filmlerimForm, values=["İzlenmiş", "İzlenmemiş", "İzlenecek"],
                                          width=125, fg_color="#3D858D", border_color="#FFFFFF",
-                                         dropdown_fg_color="#3D858D",height=35)
+                                         dropdown_fg_color="#3D858D",height=35,state="readonly")
         filtdurum_combobox.place(x=375, y=150)
+        filtdurum_combobox.set("Durum")
 
-        filtpuan_combobox = CTkComboBox(master=filmlerimForm, values=["Puan", "1", "2", "3", "4", "5"], width=125,
-                                        fg_color="#3D858D", border_color="#FFFFFF", dropdown_fg_color="#3D858D",height=35)
+        filtpuan_combobox = CTkComboBox(master=filmlerimForm, values=["1", "2", "3", "4", "5"], width=125,
+                                        fg_color="#3D858D", border_color="#FFFFFF", dropdown_fg_color="#3D858D",height=35,state="readonly")
         filtpuan_combobox.place(x=520, y=150)
+        filtpuan_combobox.set("Puan")
 
         filtreleBtn = CTkButton(master=filmlerimForm, image=arama_png, width=20, height=20, text="",font=("Ariel",20),
                                 fg_color="transparent",
@@ -219,9 +234,21 @@ def uygulamaSayfa():
     def filmEklePage():
 
         def ekleme_basarili():
+
+            with open("veri.json","r",encoding="utf-8") as dosya:
+                filmler.append(json.load(dosya))
+            film["ad"]=str(filmAdi.get())
+            film["tur"]=filmTur_combobox.get()
+            film["durum"]=filmdurum_combobox.get()
+            film["puan"]=int(filmpuan_combobox.get())
+            film["note"]=filmdegerlendirme_textbox.get("1.0","end").strip()
+            filmler.append(film)
+            with open("veri.json","w+",encoding="utf-8") as dosya:
+                json.dump(filmler,dosya,ensure_ascii=False,indent=4)
             messagebox.showinfo("Başarılı", "Film başarıyla eklendi!")
             show_frame(filmlerimPage)
-
+            with open("veri.json", "r", encoding="utf-8") as dosya:
+                print(json.load(dosya))
         filmEkleForm = CTkFrame(master=uygulama, fg_color="#373737", border_color="#426E73", border_width=2)
         filmEkleForm.pack(expand=True)
         filmEkleForm.configure(height=900, width=1300, corner_radius=2)
@@ -230,21 +257,25 @@ def uygulamaSayfa():
                                 text_color="#DFDFDF",fg_color="#1E3D3D",border_color="#426E73")
         filmAdi.place(x=330, y=150)
 
-        filmTur_combobox = CTkComboBox(master=filmEkleForm, values=["Türü", "Bilim Kurgu", "Komedi", "Drama", "Aksiyon"],
+        filmTur_combobox = CTkComboBox(master=filmEkleForm, values=["Bilim Kurgu", "Komedi", "Drama", "Aksiyon"],
                                          width=170, fg_color="#1E3D3D",
                                          dropdown_fg_color="#1E3D3D", height=40, font=("Ariel", 18,),
-                                         text_color="#DFDFDF", border_color="#426E73")
+                                         text_color="#DFDFDF", border_color="#426E73",state="readonly")
         filmTur_combobox.place(x=330, y=205)
+        filmTur_combobox.set("Türü")
 
-        filmdurum_combobox = CTkComboBox(master=filmEkleForm, values=["Durum", "İzlenmiş", "İzlenmemiş", "İzlenecek"],
+
+        filmdurum_combobox = CTkComboBox(master=filmEkleForm, values=["İzlenmiş", "İzlenmemiş", "İzlenecek"],
                                          width=170, fg_color="#1E3D3D",
-                                         dropdown_fg_color="#1E3D3D", height=40,font=("Ariel",18,),text_color="#DFDFDF",border_color="#426E73")
+                                         dropdown_fg_color="#1E3D3D", height=40,font=("Ariel",18,),text_color="#DFDFDF",border_color="#426E73",state="readonly")
         filmdurum_combobox.place(x=330, y=260)
+        filmdurum_combobox.set("Durum")
 
-        filmpuan_combobox = CTkComboBox(master=filmEkleForm, values=["Puan", "1", "2", "3", "4", "5"], width=170,
+        filmpuan_combobox = CTkComboBox(master=filmEkleForm, values=["1", "2", "3", "4", "5"], width=170,
                                         fg_color="#1E3D3D",  dropdown_fg_color="#1E3D3D",
-                                        height=40,font=("Ariel",18),text_color="#DFDFDF",border_color="#426E73")
+                                        height=40,font=("Ariel",18),text_color="#DFDFDF",border_color="#426E73",state="readonly")
         filmpuan_combobox.place(x=330, y=318)
+        filmpuan_combobox.set("Puan")
 
         degerlendirme_lbl = CTkLabel(master=filmEkleForm, text="Notlarım:", font=("Tahoma", 18, "bold"),
                                  text_color="#DFDFDF")
@@ -280,21 +311,24 @@ def uygulamaSayfa():
         filmAdi.place(x=330, y=150)
 
         filmTur_combobox = CTkComboBox(master=filmDuzenleForm,
-                                       values=["Türü", "Bilim Kurgu", "Komedi", "Drama", "Aksiyon"],
+                                       values=["Bilim Kurgu", "Komedi", "Drama", "Aksiyon"],
                                        width=170, fg_color="#1E3D3D",
                                        dropdown_fg_color="#1E3D3D", height=40, font=("Ariel", 18,),
-                                       text_color="#DFDFDF", border_color="#426E73")
+                                       text_color="#DFDFDF", border_color="#426E73",state="readonly")
         filmTur_combobox.place(x=330, y=205)
+        filmTur_combobox.set("Türü")
 
-        filmdurum_combobox = CTkComboBox(master=filmDuzenleForm, values=["Durum", "İzlenmiş", "İzlenmemiş", "İzlenecek"],
+        filmdurum_combobox = CTkComboBox(master=filmDuzenleForm, values=["İzlenmiş", "İzlenmemiş", "İzlenecek"],
                                          width=170, fg_color="#1E3D3D",
-                                         dropdown_fg_color="#1E3D3D", height=40,font=("Ariel",18,),text_color="#DFDFDF",border_color="#426E73")
+                                         dropdown_fg_color="#1E3D3D", height=40,font=("Ariel",18,),text_color="#DFDFDF",border_color="#426E73",state="readonly")
         filmdurum_combobox.place(x=330, y=260)
+        filmdurum_combobox.set("Durum")
 
         filmpuan_combobox = CTkComboBox(master=filmDuzenleForm, values=["Puan", "1", "2", "3", "4", "5"], width=170,
                                         fg_color="#1E3D3D",  dropdown_fg_color="#1E3D3D",
-                                        height=40,font=("Ariel",18),text_color="#DFDFDF",border_color="#426E73")
+                                        height=40,font=("Ariel",18),text_color="#DFDFDF",border_color="#426E73",state="readonly")
         filmpuan_combobox.place(x=330, y=318)
+        filmpuan_combobox.set("Puan")
 
         degerlendirme_lbl = CTkLabel(master=filmDuzenleForm, text="Notlarım:", font=("Tahoma", 18, "bold"),
                                  text_color="#DFDFDF")
